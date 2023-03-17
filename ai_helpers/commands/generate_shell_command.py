@@ -23,7 +23,7 @@ def generate_shell_command(prompt, shell, verbose, model, execute, temperature):
         You are a helpful assistant who will generate linux commands for {shell}.
         You will {"" if verbose else "not"} show an explanation of the command.\
         The command may be multiple lines if necessary, but short commands are preferred.
-        There should be no backticks included.
+        There should be no backticks included. Only the command text should be returned.
     """)
 
     message_config = [
@@ -49,7 +49,7 @@ def generate_shell_command(prompt, shell, verbose, model, execute, temperature):
         click.echo(f"Usage: (prompt: {res['usage']['prompt_tokens']}) (completion: {res['usage']['completion_tokens']}) (total: {res['usage']['total_tokens']})")
 
     if execute:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
         while True:
             output = process.stdout.readline()
             print(output.strip())
